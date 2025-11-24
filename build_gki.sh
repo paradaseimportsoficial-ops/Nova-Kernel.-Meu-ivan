@@ -128,10 +128,19 @@ gen_anykernel() {
 }
 
 # --- 🚀 Main Control Logic ---
+setup_ksu() {
+    cd "$SRC_DIR"
+    curl -LSs "https://raw.githubusercontent.com/rsuntk/KernelSU/main/kernel/setup.sh" | bash -s main
+}
+
 case "$1" in
     deps) install_deps "$2" ;;
+    ksu) setup_ksu ;;
     tools) fetch_tools ;;
-    build) build_kernel "$2" ;;
+    build) 
+        setup_ksu
+        build_kernel "$2" 
+        ;;
     pack) gen_anykernel ;;
-    *) echo "Usage: $0 {deps|tools|build|pack}" ;;
+    *) echo "Usage: $0 {deps|ksu|tools|build|pack}" ;;
 esac
