@@ -1,0 +1,23 @@
+name: Compilar NovaKernel M52
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o Codigo-Fonte
+        uses: actions/checkout@v4
+
+      - name: Instalar Ferramentas de Compilacao
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bc bison build-essential flex git libssl-dev libcrypto++-dev libelf-dev ccache
+
+      - name: Configurar e Compilar o Kernel
+        run: |
+          export ARCH=arm64
+          export SUBARCH=arm64
+          make clean
+          make mrproper
+          # O script vai tentar ler as pastas originais do NovaKernel
