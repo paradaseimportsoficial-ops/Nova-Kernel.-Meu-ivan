@@ -22,5 +22,7 @@ jobs:
           export ARCH=arm64
           export CROSS_COMPILE=aarch64-linux-gnu-
           make mrproper
+          make clean
           make defconfig
-          make -j2 V=1 KCFLAGS="-Wno-error -fpermissive -w"
+          # Tenta compilar ignorando erros de aviso e forçando a permissividade
+          make -j2 KCFLAGS="-w"
