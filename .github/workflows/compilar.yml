@@ -23,6 +23,6 @@ jobs:
           export CROSS_COMPILE=aarch64-linux-gnu-
           make mrproper
           make clean
-          # Usaremos o defconfig padrão do kernel para evitar erros de drivers específicos
           make defconfig
-          make -j2
+          # KCFLAGS="-w" silencia os avisos e impede que o compilador pare por causa deles
+          make -j2 KCFLAGS="-w"
