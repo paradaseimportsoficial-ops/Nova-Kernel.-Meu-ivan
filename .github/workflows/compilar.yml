@@ -14,14 +14,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y git bc bison flex libssl-dev libelf-dev gcc-aarch64-linux-gnu
 
-      - name: Compilar Imagem do Kernel
+            - name: Compilar Imagem do Kernel
         run: |
           export ARCH=arm64
           export CROSS_COMPILE=aarch64-linux-gnu-
           make mrproper
           make defconfig
           ./scripts/config --disable CONFIG_ACPI
+          ./scripts/config --disable CONFIG_FTRACE
+          ./scripts/config --disable CONFIG_FUNCTION_TRACER
           make -j2 KCFLAGS="-Wno-error -fpermissive -w"
+
 
       - name: Salvar Arquivo Boot final
         uses: actions/upload-artifact@v4
