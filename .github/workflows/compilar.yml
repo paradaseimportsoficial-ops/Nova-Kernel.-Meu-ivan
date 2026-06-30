@@ -17,14 +17,31 @@ jobs:
       - name: Configurar tarefa
         uses: actions/checkout@v4
 
+      name: Compilar Kernel
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Instalar Ferramentas de Compilação
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
+
+      - name: Configurar tarefa
+        uses: actions/checkout@v4
+
       - name: Compilar Imagem do Kernel
         run: |
           export ARCH=arm64
           export CROSS_COMPILE=aarch64-linux-gnu-
           make mrproper
           make defconfig
+          # Mantendo apenas desativações essenciais para evitar conflitos conhecidos
           ./scripts/config --disable CONFIG_ACPI
-          ./scripts/config --disable CONFIG_FTRACE
-          ./scripts/config --disable CONFIG_FUNCTION_TRACER
-          ./scripts/config --disable CONFIG_COMMON_CLK_QCOM
           make -j2 KCFLAGS="-Wno-error -fpermissive -w"
