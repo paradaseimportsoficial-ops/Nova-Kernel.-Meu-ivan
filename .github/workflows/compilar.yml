@@ -20,6 +20,7 @@ jobs:
           export CROSS_COMPILE=aarch64-linux-gnu-
           make mrproper
           make defconfig
+          ./scripts/config --disable CONFIG_ACPI
           make -j2 KCFLAGS="-Wno-error -fpermissive -w"
 
       - name: Salvar Arquivo Boot final
