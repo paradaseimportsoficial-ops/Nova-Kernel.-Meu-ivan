@@ -16,8 +16,7 @@ jobs:
 
       - name: Baixar Compilador Clang do Google
         run: |
-          mkdir -y android-clang
-          cd android-clang
+          cd $GITHUB_WORKSPACE
           wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r522940.tar.gz
           tar -xf clang-r522940.tar.gz
 
@@ -25,7 +24,7 @@ jobs:
         run: |
           export ARCH=arm64
           export SUBARCH=arm64
-          export PATH=$(pwd)/android-clang/bin:$PATH
+          export PATH=$GITHUB_WORKSPACE/bin:$PATH
           make clean
           make mrproper
           make qcom_rio_defconfig
@@ -36,3 +35,4 @@ jobs:
         with:
           name: RIO_Kernel_M52
           path: arch/arm64/boot/Image
+
