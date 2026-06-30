@@ -23,6 +23,6 @@ jobs:
           export CROSS_COMPILE=aarch64-linux-gnu-
           make mrproper
           make clean
-          make defconfig
-          # Tenta compilar ignorando erros de aviso e forçando a permissividade
+          # Copiamos o arquivo .config específico para a raiz do kernel
+          cp arch/arm64/configs/M52XQ.config .config
           make -j2 KCFLAGS="-w"
