@@ -1,4 +1,5 @@
-name: Compilar RIO NovaKernel M52
+name: Compilar Kernel
+
 on:
   workflow_dispatch:
 
@@ -6,15 +7,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Baixar o Codigo-Fonte
+      - name: Configurar tarefa
         uses: actions/checkout@v4
 
-      - name: Instalar Ferramentas
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git bc bison flex libssl-dev libelf-dev gcc-aarch64-linux-gnu
-
-            - name: Compilar Imagem do Kernel
+      - name: Compilar Imagem do Kernel
         run: |
           export ARCH=arm64
           export CROSS_COMPILE=aarch64-linux-gnu-
@@ -24,10 +20,3 @@ jobs:
           ./scripts/config --disable CONFIG_FTRACE
           ./scripts/config --disable CONFIG_FUNCTION_TRACER
           make -j2 KCFLAGS="-Wno-error -fpermissive -w"
-
-
-      - name: Salvar Arquivo Boot final
-        uses: actions/upload-artifact@v4
-        with:
-          name: RIO_Kernel_M52
-          path: arch/arm64/boot/Image
