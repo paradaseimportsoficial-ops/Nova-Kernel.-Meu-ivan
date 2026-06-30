@@ -15,7 +15,7 @@ jobs:
       - name: Configurar tarefa
         uses: actions/checkout@v4
 
-      - name: Compilar Imagem do Kernel
+            - name: Compilar Imagem do Kernel
         run: |
           export ARCH=arm64
           export CROSS_COMPILE=aarch64-linux-gnu-
@@ -24,5 +24,5 @@ jobs:
           ./scripts/config --disable CONFIG_ACPI
           ./scripts/config --disable CONFIG_FTRACE
           ./scripts/config --disable CONFIG_FUNCTION_TRACER
+          ./scripts/config --disable CONFIG_COMMON_CLK_QCOM
           make -j2 KCFLAGS="-Wno-error -fpermissive -w"
-
