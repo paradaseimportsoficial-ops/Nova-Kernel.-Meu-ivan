@@ -1,8 +1,26 @@
+name: Compilar Kernel
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Instalar Dependências
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git bc bison flex libssl-dev gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu make libc6-dev libncurses5-dev
+
+      - name: Configurar tarefa
+        uses: actions/checkout@v4
+
       - name: Compilar Imagem do Kernel
         run: |
           export ARCH=arm64
           export CROSS_COMPILE=aarch64-linux-gnu-
           make mrproper
           make defconfig
-          # Adicionamos V=1 para mostrar o comando exato que falha
           make -j2 V=1 KCFLAGS="-Wno-error -fpermissive -w"
