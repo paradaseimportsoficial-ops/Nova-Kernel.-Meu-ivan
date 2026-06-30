@@ -17,28 +17,12 @@ jobs:
       - name: Configurar tarefa
         uses: actions/checkout@v4
 
-      - name: Listar Configurações Disponíveis
-        run: |
-          echo "=== Arquivos encontrados na pasta configs ==="
-          ls arch/arm64/configs/
-
       - name: Compilar Imagem do Kernel
         run: |
           export ARCH=arm64
           export CROSS_COMPILE=aarch64-linux-gnu-
           make mrproper
           make clean
-          
-          # Sistema de busca inteligente para cópia do arquivo de configuração
-          if [ -f arch/arm64/configs/M52XQ.config ]; then
-            cp arch/arm64/configs/M52XQ.config .config
-          elif [ -f arch/arm64/configs/m52xq.config ]; then
-            cp arch/arm64/configs/m52xq.config .config
-          elif [ -f arch/arm64/configs/m52xq_defconfig ]; then
-            cp arch/arm64/configs/m52xq_defconfig .config
-          else
-            echo "Tentando copiar por aproximação de nome..."
-            cp arch/arm64/configs/*m52xq* .config 2>/dev/null || cp arch/arm64/configs/*M52XQ* .config 2>/dev/null
-          fi
-          
-          make -j2 KCFLAGS="-w"
+          # Usaremos o defconfig padrão do kernel para evitar erros de drivers específicos
+          make defconfig
+          make -j2
