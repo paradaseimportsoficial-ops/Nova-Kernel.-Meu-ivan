@@ -9,10 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Instalar Ferramentas de Compilação
+      - name: Instalar Dependências
         run: |
           sudo apt-get update
-          sudo apt-get install -y git bc bison flex libssl-dev gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
+          sudo apt-get install -y git bc bison flex libssl-dev gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu make libc6-dev libncurses5-dev
 
       - name: Configurar tarefa
         uses: actions/checkout@v4
@@ -22,7 +22,5 @@ jobs:
           export ARCH=arm64
           export CROSS_COMPILE=aarch64-linux-gnu-
           make mrproper
-          # Usamos 'allyesconfig' para tentar forçar uma configuração que cubra as dependências
-          # ou, se preferir, podemos tentar pular o defconfig se houver um arquivo de config específico
-          make allyesconfig
+          make defconfig
           make -j2 KCFLAGS="-Wno-error -fpermissive -w"
