@@ -22,5 +22,7 @@ jobs:
           export ARCH=arm64
           export CROSS_COMPILE=aarch64-linux-gnu-
           make mrproper
-          make defconfig
+          # Usamos 'allyesconfig' para tentar forçar uma configuração que cubra as dependências
+          # ou, se preferir, podemos tentar pular o defconfig se houver um arquivo de config específico
+          make allyesconfig
           make -j2 KCFLAGS="-Wno-error -fpermissive -w"
