@@ -9,30 +9,22 @@ jobs:
       - name: Baixar o Codigo-Fonte
         uses: actions/checkout@v4
 
-      - name: Instalar Ferramentas Oficiais
+      - name: Instalar Ferramentas Oficiais e Clang
         run: |
           sudo apt-get update
-          sudo apt-get install -y bc bison build-essential flex git libssl-dev libcrypto++-dev libelf-dev ccache lz4 liblz4-tool
-
-      - name: Baixar Compilador Clang do Google
-        run: |
-          cd $GITHUB_WORKSPACE
-          wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/clang-r522940.tar.gz
-          tar -xf clang-r522940.tar.gz
+          sudo apt-get install -y bc bison build-essential flex git libssl-dev libcrypto++-dev libelf-dev ccache lz4 liblz4-tool clang lld llvm
 
       - name: Compilar Imagem do Kernel
         run: |
           export ARCH=arm64
           export SUBARCH=arm64
-          export PATH=$GITHUB_WORKSPACE/bin:$PATH
           make clean
           make mrproper
           make qcom_rio_defconfig
-          make -j$(nproc) CC=clang CROSS_COMPILE=aarch64-linux-gnu-
+          make -j$(nproc) CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu-
 
       - name: Salvar Arquivo Boot final
         uses: actions/upload-artifact@v4
         with:
           name: RIO_Kernel_M52
           path: arch/arm64/boot/Image
-
