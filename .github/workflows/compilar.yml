@@ -12,7 +12,7 @@ jobs:
       - name: Instalar Ferramentas Oficiais e Clang
         run: |
           sudo apt-get update
-          sudo apt-get install -y bc bison build-essential flex git libssl-dev libcrypto++-dev libelf-dev ccache lz4 liblz4-tool clang lld llvm
+          sudo apt-get install -y bc bison build-essential flex git libssl-dev libcrypto++-dev libelf-dev ccache lz4 liblz4-tool clang lld llvm gcc-aarch64-linux-gnu
 
       - name: Compilar Imagem do Kernel
         run: |
