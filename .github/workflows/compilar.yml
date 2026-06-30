@@ -26,3 +26,4 @@ jobs:
           ./scripts/config --disable CONFIG_FUNCTION_TRACER
           ./scripts/config --disable CONFIG_COMMON_CLK_QCOM
           make -j2 KCFLAGS="-Wno-error -fpermissive -w"
+
