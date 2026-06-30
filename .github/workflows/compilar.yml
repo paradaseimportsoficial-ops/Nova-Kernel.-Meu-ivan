@@ -20,7 +20,7 @@ jobs:
           export SUBARCH=arm64
           make clean
           make mrproper
-          make vendor/m52xq_defconfig
+          make m52xq_defconfig
           make -j$(nproc) CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu-
 
       - name: Salvar Arquivo Boot final
