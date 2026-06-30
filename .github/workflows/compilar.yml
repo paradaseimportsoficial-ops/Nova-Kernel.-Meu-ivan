@@ -20,7 +20,7 @@ jobs:
           export CROSS_COMPILE=aarch64-linux-gnu-
           make mrproper
           make defconfig
-          make -j$(nproc) KCFLAGS="-Wno-error -fpermissive"
+          make -j2 KCFLAGS="-Wno-error -fpermissive -w"
 
       - name: Salvar Arquivo Boot final
         uses: actions/upload-artifact@v4
